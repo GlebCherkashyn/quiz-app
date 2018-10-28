@@ -44,7 +44,12 @@ class ResultsPresenterTest: XCTestCase {
         XCTAssertEqual(sut.presentableAnswers.count, 1)
         XCTAssertEqual(sut.presentableAnswers.first!.question, "Q1")
         XCTAssertEqual(sut.presentableAnswers.first!.answer, "A2")
-        XCTAssertEqual(sut.presentableAnswers.first!.wrongAnswer, "A1")
+        switch sut.presentableAnswers.first!.type {
+        case .wrongAnswer(let answer):
+            XCTAssertEqual(answer, "A1")
+        default:
+            break
+        }
     }
 
     func test_presentableAnswers_withWrongMultipleAnswer_mapsAnswer() {
@@ -57,7 +62,12 @@ class ResultsPresenterTest: XCTestCase {
         XCTAssertEqual(sut.presentableAnswers.count, 1)
         XCTAssertEqual(sut.presentableAnswers.first!.question, "Q2")
         XCTAssertEqual(sut.presentableAnswers.first!.answer, "A2, A3")
-        XCTAssertEqual(sut.presentableAnswers.first!.wrongAnswer, "A1, A4")
+        switch sut.presentableAnswers.first!.type {
+        case .wrongAnswer(let answer):
+            XCTAssertEqual(answer, "A1, A4")
+        default:
+            break
+        }
     }
 
     func test_presentableAnswers_withTwoQuestions_mapsOrderedAnswer() {
@@ -71,11 +81,23 @@ class ResultsPresenterTest: XCTestCase {
         XCTAssertEqual(sut.presentableAnswers.count, 2)
         XCTAssertEqual(sut.presentableAnswers.first!.question, "Q1")
         XCTAssertEqual(sut.presentableAnswers.first!.answer, "A2")
-        XCTAssertNil(sut.presentableAnswers.first!.wrongAnswer)
+        
+        switch sut.presentableAnswers.first!.type {
+        case .wrongAnswer(let answer):
+            XCTAssertFalse(answer.count == 0)
+        default:
+            break
+        }
         
         XCTAssertEqual(sut.presentableAnswers.last!.question, "Q2")
         XCTAssertEqual(sut.presentableAnswers.last!.answer, "A1, A4")
-        XCTAssertNil(sut.presentableAnswers.last!.wrongAnswer)
+        
+        switch sut.presentableAnswers.first!.type {
+        case .wrongAnswer(let answer):
+            XCTAssertFalse(answer.count == 0)
+        default:
+            break
+        }
     }
 
 }
