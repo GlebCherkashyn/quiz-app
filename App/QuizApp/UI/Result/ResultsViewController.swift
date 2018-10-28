@@ -21,8 +21,7 @@ class ResultsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         headerLabel.text = summary
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(CorrectAnswerCell.self)
-        tableView.register(WrongAnswerCell.self)
+        tableView.register([.rightAnswer, .wrongAnswer])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -30,30 +29,16 @@ class ResultsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let answer = answers[indexPath.row]
-        if answer.wrongAnswer == nil {
-            return correctAnswerCell(for: answer)
-        }
-        return wrongAnswerCell(for: answer)
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: answer.type.cellID) as! AnswerBaseCell
+        cell.configure(with: answer)
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return answers[indexPath.row].wrongAnswer == nil ? 70 : 90
+        return answers[indexPath.row].type.defaultRowHeight
     }
-    
-    private func correctAnswerCell(for answer: PresentableAnswer) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(CorrectAnswerCell.self)!
-        cell.questionLabel.text = answer.question
-        cell.answerLabel.text = answer.answer
-        return cell
-    }
-    
-    private func wrongAnswerCell(for answer: PresentableAnswer) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(WrongAnswerCell.self)!
-        cell.questionLabel.text = answer.question
-        cell.correctAnswerLabel.text = answer.answer
-        cell.wrongAnswerLabel.text = answer.wrongAnswer
-        return cell
-    }
-
 }

@@ -14,4 +14,10 @@ extension UITableView {
         let className = String(describing: type)
         return dequeueReusableCell(withIdentifier: className) as? T
     }
+    
+    func register(_ cells: [QuizAppCell]) {
+        for cell in cells {
+            register(UINib(nibName: cell.description, bundle: nil), forCellReuseIdentifier: cell.description)
+        }
+    }
 }

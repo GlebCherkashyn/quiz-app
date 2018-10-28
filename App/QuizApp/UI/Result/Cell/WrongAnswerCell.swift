@@ -4,8 +4,29 @@
 
 import UIKit
 
-class WrongAnswerCell: UITableViewCell {
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var correctAnswerLabel: UILabel!
-    @IBOutlet weak var wrongAnswerLabel: UILabel!
+class WrongAnswerCell: AnswerBaseCell {
+    
+    // MARK: - Outlets -
+    @IBOutlet private weak var wrongAnswerLabel: UILabel!
+    
+    // MARK: - Overrided functions -
+    override func configure(with answer: PresentableAnswer) {
+        super.configure(with: answer)
+        
+        switch answer.type {
+        case .wrongAnswer(let wrongAnswer):
+            wrongAnswerLabel.text = wrongAnswer
+        default:
+            break
+        }
+    }
+    
+    // MARK: - Public functions -
+    
+    // MARK: - Comments -
+    // Helper to pass your UI tests
+    // I prefer to keep outlets private
+    func wrongLabelAnswerText() -> String? {
+        return wrongAnswerLabel.text
+    }
 }

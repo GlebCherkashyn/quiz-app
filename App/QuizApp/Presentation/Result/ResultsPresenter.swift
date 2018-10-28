@@ -35,7 +35,7 @@ struct ResultsPresenter {
             return PresentableAnswer(
                 question: value,
                 answer: formattedAnswer(correctAnswer),
-                wrongAnswer: formattedWrongAnswer(userAnswer, correctAnswer))
+                type: formattedAnswerType(userAnswer, correctAnswer))
         }
     }
     
@@ -43,7 +43,13 @@ struct ResultsPresenter {
         return answer.joined(separator: ", ")
     }
 
-    private func formattedWrongAnswer(_ userAnswer: [String], _ correctAnswer: [String]) -> String? {
-        return correctAnswer == userAnswer ? nil : formattedAnswer(userAnswer)
+//    private func formattedWrongAnswer(_ userAnswer: [String], _ correctAnswer: [String]) -> String? {
+//        return correctAnswer == userAnswer ? nil : formattedAnswer(userAnswer)
+//    }
+    
+    private func formattedAnswerType(_ userAnswer: [String], _ correctAnswer: [String]) -> AnswerType {
+    
+        return correctAnswer == userAnswer ? .rightAnswer :
+                                             .wrongAnswer(formattedAnswer(userAnswer))
     }
 }

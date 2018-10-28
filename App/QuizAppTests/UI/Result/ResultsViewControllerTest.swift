@@ -24,8 +24,10 @@ class ResultsViewControllerTest: XCTestCase {
         let cell = sut.tableView.cell(at: 0) as? CorrectAnswerCell
         
         XCTAssertNotNil(cell)
-        XCTAssertEqual(cell?.questionLabel.text, "Q1")
-        XCTAssertEqual(cell?.answerLabel.text, "A1")
+        
+        cell?.configure(with: answer)
+        XCTAssertEqual(cell?.questionLabelText(), "Q1")
+        XCTAssertEqual(cell?.correctAnswerLabelText(), "A1")
     }
     
     func test_viewDidLoad_withWrongAnswer_configuresCell() {
@@ -35,9 +37,9 @@ class ResultsViewControllerTest: XCTestCase {
         let cell = sut.tableView.cell(at: 0) as? WrongAnswerCell
         
         XCTAssertNotNil(cell)
-        XCTAssertEqual(cell?.questionLabel.text, "Q1")
-        XCTAssertEqual(cell?.correctAnswerLabel.text, "A1")
-        XCTAssertEqual(cell?.wrongAnswerLabel.text, "wrong")
+        XCTAssertEqual(cell?.questionLabelText(), "Q1")
+        XCTAssertEqual(cell?.correctAnswerLabelText(), "A1")
+        XCTAssertEqual(cell?.wrongLabelAnswerText(), "wrong")
     }
 
     // MARK: Helpers
@@ -49,6 +51,7 @@ class ResultsViewControllerTest: XCTestCase {
     }
     
     func makeAnswer(question: String = "", answer: String = "", wrongAnswer: String? = nil) -> PresentableAnswer {
-        return PresentableAnswer(question: question, answer: answer, wrongAnswer: wrongAnswer)
+        let type = wrongAnswer == nil ? AnswerType.rightAnswer : AnswerType.wrongAnswer(wrongAnswer!)
+        return PresentableAnswer(question: question, answer: answer, type: type)
     }
 }
